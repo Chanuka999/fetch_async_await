@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <fieldset>
+      <legend>Return a user's Country</legend>
+      <input type="text" id="usernameGet" placeholder="Username" />
+      <button type="button" id="btnGet" onclick="getUserCountry()">
+        Retriew
+      </button>
+    </fieldset>
+
+    <script>
+      async function getUserCountry() {
+        const username = document.getElementById("usernameGet").value;
+        if (!username) {
+          alert("please enter a username");
+          return;
+        }
+
+        const endpoint = `https://api.github.com/users/${username}`;
+        try {
+          const response = await fetch(endpoint);
+          if (!response.ok) {
+            alert("Username not found or error fetching data");
+            return;
+          }
+          const data = await response.json();
+
+          console.log(`User: ${data.login}`);
+          console.log(`Name: ${data.name || "N/A"}`);
+          console.log(`Location: ${data.location || "N/A"}`);
+          console.log(data);
+
+          alert(
+            `User: ${data.login}\nName: ${data.name || "N/A"}\nLocation: ${data.location || "N/A"}`,
+          );
+        } catch (error) {
+          alert("Network error or invalid response");
+        }
+      }
+    </script>
+  </body>
+</html>
